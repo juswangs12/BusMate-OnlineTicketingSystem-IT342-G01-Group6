@@ -112,10 +112,16 @@ public class AuthController {
     @PreAuthorize("hasAuthority('SUPER_ADMIN')")
     @PostMapping("/transfer-super-admin/{toUserId}")
     public ResponseEntity<?> transferSuperAdmin(@PathVariable Long toUserId, Authentication auth) {
-        User acting = userService.findByEmail(((DefaultOAuth2User) auth.getPrincipal()).getAttribute("email"));
+        String email = getEmailFromAuth(auth);
+        if (email == null)
+            return ResponseEntity.status(401).body(Map.of("error", "Unauthorized"));
+
+        User acting = userService.findByEmail(email);
         userService.transferSuperAdmin(toUserId, acting);
+
         return ResponseEntity.ok(Map.of("message", "Super Admin ownership transferred successfully"));
     }
+
 
     private String getEmailFromAuth(Authentication auth) {
         Object p = auth.getPrincipal();
