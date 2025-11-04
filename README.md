@@ -129,8 +129,8 @@ Super Admin transfer and audit logs
 ## Team Members
 **Joshua Noel D. Lo - Mobile Developer - joshuanoel.lo@cit.edu**
 
-**John Joseph A. Laborada - Web Developer - johnjoseph.laborada@cit.edu**
+**John Joseph A. Laborada - Backend Developer - johnjoseph.laborada@cit.edu**
 
 **Nathan Xander Lada - Mobile Developer - nathanxander.lada@cit.edu**
 
-**Jose Raphael R. Lawas - Mobile Developer - joseraphael.lawas@cit.edu**
+**Jose Raphael R. Lawas - Web Developer - joseraphael.lawas@cit.edu**
