@@ -1,35 +1,139 @@
+// File: src/pages/ProfilePage.jsx
+
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { authAPI } from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 
 const ProfilePage = () => {
-  const { user } = useAuth();
+  const { user, setUser, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({ name: '' });
+  const [loading, setLoading] = useState(false);
+
+  // Populate form when user becomes available
+  useEffect(() => {
+    if (user) {
+      setFormData({ name: user.name || '' });
+    }
+  }, [user]);
 
   if (!user) return null;
+
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
+    if (!formData.name || formData.name.trim() === '') {
+      alert('Name cannot be empty');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const payload = { name: formData.name.trim() };
+      const res = await authAPI.updateProfile(payload);
+      // res.data should contain updated user object (controller returns safe map/dto)
+      // update auth context so UI reflects change globally
+      setUser(res.data);
+      setIsEditing(false);
+      alert('Profile updated');
+    } catch (err) {
+      console.error('Failed to update profile', err);
+      alert(err.response?.data?.message || 'Failed to update profile');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    const ok = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
+    if (!ok) return;
+
+    setLoading(true);
+    try {
+      await authAPI.deleteAccount();
+      // clear client-side auth and navigate to login
+      logout(); // this clears token and navigates to login in your context
+      // If your logout does not navigate, do it here:
+      // navigate('/login');
+    } catch (err) {
+      console.error('Failed to delete account', err);
+      alert(err.response?.data?.message || 'Failed to delete account');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="profile-page">
       <div className="profile-container">
         <h1>My Profile</h1>
-        
+
         <div className="profile-card">
           <div className="profile-avatar">
             {user.name?.charAt(0).toUpperCase()}
           </div>
-          
+
           <div className="profile-info">
-            <div className="info-row">
-              <label>Name:</label>
-              <span>{user.name}</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3>Account Info</h3>
+              <div>
+                <button
+                  onClick={() => {
+                    setIsEditing(prev => !prev);
+                    // reset form to current name when toggling edit on
+                    if (!isEditing) setFormData({ name: user.name || '' });
+                  }}
+                  disabled={loading}
+                >
+                  {isEditing ? 'Cancel' : 'Edit'}
+                </button>
+                <button
+                  onClick={handleDeleteAccount}
+                  disabled={loading}
+                  style={{ marginLeft: 8 }}
+                  className="danger"
+                >
+                  Delete Account
+                </button>
+              </div>
             </div>
-            <div className="info-row">
-              <label>Email:</label>
-              <span>{user.email}</span>
-            </div>
-            <div className="info-row">
-              <label>Role:</label>
-              <span className={`role-badge ${user.role?.toLowerCase()}`}>
-                {user.role}
-              </span>
-            </div>
+
+            {isEditing ? (
+              <form className="profile-edit-form" onSubmit={handleUpdateProfile}>
+                <div className="info-row">
+                  <label>Name:</label>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div style={{ marginTop: 12 }}>
+                  <button type="submit" disabled={loading}>Save</button>
+                </div>
+              </form>
+            ) : (
+              <>
+                <div className="info-row">
+                  <label>Name:</label>
+                  <span>{user.name}</span>
+                </div>
+                <div className="info-row">
+                  <label>Email:</label>
+                  <span>{user.email}</span>
+                </div>
+                <div className="info-row">
+                  <label>Role:</label>
+                  <span className={`role-badge ${user.role?.toLowerCase()}`}>
+                    {user.role}
+                  </span>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
