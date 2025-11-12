@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authAPI } from '../api/axios';
+import { authAPI, bookingAPI } from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 
 const ProfilePage = () => {
@@ -19,6 +19,22 @@ const ProfilePage = () => {
   }, [user]);
 
   if (!user) return null;
+
+  // Fetch bookings
+  useEffect(() => {
+    const fetchBookings = async () => {
+      if (!user?.id) return;
+      try {
+        const res = await bookingAPI.getUserBookings(user.id);
+        setBookings(res.data);
+      } catch (err) {
+        console.error('Failed to fetch bookings', err);
+      } finally {
+        setLoadingBookings(false);
+      }
+    };
+    fetchBookings();
+  }, [user]);
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
@@ -140,7 +156,22 @@ const ProfilePage = () => {
 
         <div className="profile-section">
           <h2>My Bookings</h2>
-          <p className="text-muted">Your booking history will appear here</p>
+          {loadingBookings ? (
+            <p>Loading bookings...</p>
+          ) : bookings.length === 0 ? (
+            <p className="text-muted">No bookings yet</p>
+          ) : (
+            <div className="bookings-list">
+              {bookings.map(booking => (
+                <div key={booking.id} className="booking-card">
+                  <p><strong>Booking ID:</strong> {booking.id}</p>
+                  <p><strong>Amount:</strong> ₱{booking.amount}</p>
+                  <p><strong>Status:</strong> {booking.status}</p>
+                  <p><strong>Date:</strong> {new Date(booking.createdAt).toLocaleDateString()}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
