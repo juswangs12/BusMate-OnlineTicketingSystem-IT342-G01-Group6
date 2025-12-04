@@ -52,8 +52,6 @@ const ProfilePage = () => {
     try {
       const payload = { name: formData.name.trim() };
       const res = await authAPI.updateProfile(payload);
-      // res.data should contain updated user object (controller returns safe map/dto)
-      // update auth context so UI reflects change globally
       setUser(res.data);
       setIsEditing(false);
       alert('Profile updated');
@@ -96,14 +94,26 @@ const ProfilePage = () => {
           <div className="profile-info">
             <div className="profile-info-header">
               <h3>Account Info</h3>
+              {/* FIXED: Added style to make the button normal sized */}
               <button
+                type="button"
                 className="btn-secondary"
                 onClick={() => {
                   setIsEditing(prev => !prev);
-                  // reset form to current name when toggling edit on
                   if (!isEditing) setFormData({ name: user.name || '' });
                 }}
                 disabled={loading}
+                style={{ 
+                  width: 'auto', 
+                  flex: 'none', 
+                  padding: '0.5rem 1.2rem', 
+                  fontSize: '0.9rem',
+                  fontWeight: '600',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  borderRadius: '0.5rem'
+                }}
               >
                 {isEditing ? 'Cancel' : 'Edit'}
               </button>
