@@ -22,16 +22,9 @@ const SeatSelector = ({ schedule, onConfirm, onBack }) => {
       console.log('Fetching seats from:', `/seats/schedule/${schedule.id}`)
       
       const response = await seatAPI.getBySchedule(schedule.id)
-      console.log('Loaded seats:', response.data)
-      console.log('Number of seats:', response.data?.length)
-      console.log('Bus type:', schedule.bus?.busType)
-      console.log('Bus capacity:', schedule.bus?.busType?.capacity)
       setSeats(response.data)
     } catch (error) {
       console.error('Failed to load seats:', error)
-      console.error('Error response:', error.response)
-      console.error('Error details:', error.response?.data)
-      console.error('Error status:', error.response?.status)
       alert('Failed to load seats. Please make sure seats have been generated for this schedule.')
     } finally {
       setLoading(false)
@@ -74,7 +67,21 @@ const SeatSelector = ({ schedule, onConfirm, onBack }) => {
     return (
       <div className="seat-selector">
         <div className="selector-header">
-          <button className="btn-secondary" onClick={onBack}>
+          {/* FIXED: Added style to prevent button from stretching */}
+          <button 
+            type="button" 
+            className="btn-secondary" 
+            onClick={onBack}
+            style={{ 
+              width: 'auto', 
+              flex: 'none', 
+              padding: '0.6rem 1.2rem', 
+              fontSize: '0.9rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
             ← Back
           </button>
         </div>
@@ -90,7 +97,21 @@ const SeatSelector = ({ schedule, onConfirm, onBack }) => {
   return (
     <div className="seat-selector">
       <div className="selector-header">
-        <button className="btn-secondary" onClick={onBack}>
+        {/* FIXED: Added style to prevent button from stretching */}
+        <button 
+          type="button" 
+          className="btn-secondary" 
+          onClick={onBack}
+          style={{ 
+            width: 'auto', 
+            flex: 'none', 
+            padding: '0.6rem 1.2rem', 
+            fontSize: '0.9rem',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
           ← Back
         </button>
         <div>
@@ -116,53 +137,51 @@ const SeatSelector = ({ schedule, onConfirm, onBack }) => {
         </div>
       </div>
 
-  <div className="seat-wrapper">
-      <div className="seat-legend">
-        <span className="legend-item">
-          <div className="seat-box available"></div> Available
-        </span>
-        <span className="legend-item">
-          <div className="seat-box selected"></div> Selected
-        </span>
-        <span className="legend-item">
-          <div className="seat-box reserved"></div> Reserved
-        </span>
-      </div>
-
-      <div className="bus-layout">
-        <div className="driver-section">🚐 Driver</div>
-        <div className="bus-seats-container">
-          {organizeSeats().map((row, rowIndex) => {
-            const isLastRow = row.length === 5
-            
-            // Create seat elements with aisle gap for regular rows
-            const seatElements = []
-            row.forEach((seat, seatIndex) => {
-              // Add aisle gap after 2nd seat in regular rows (4-seat rows)
-              if (!isLastRow && seatIndex === 2) {
-                seatElements.push(<div key={`aisle-${rowIndex}`} className="aisle-gap"></div>)
-              }
-              
-              seatElements.push(
-                <button
-                  key={seat.id}
-                  className={`seat ${seat.status.toLowerCase()} ${selectedSeats.includes(seat.seatNumber) ? 'selected' : ''}`}
-                  onClick={() => toggleSeat(seat.seatNumber, seat.status)}
-                  disabled={seat.status !== 'AVAILABLE'}
-                >
-                  {seat.seatNumber}
-                </button>
-              )
-            })
-            
-            return (
-              <div key={rowIndex} className={`seat-row ${isLastRow ? 'last-row' : ''}`}>
-                {seatElements}
-              </div>
-            )
-          })}
+      <div className="seat-wrapper">
+        <div className="seat-legend">
+          <span className="legend-item">
+            <div className="seat-box available"></div> Available
+          </span>
+          <span className="legend-item">
+            <div className="seat-box selected"></div> Selected
+          </span>
+          <span className="legend-item">
+            <div className="seat-box reserved"></div> Reserved
+          </span>
         </div>
-      </div>
+
+        <div className="bus-layout">
+          <div className="driver-section">🚐 Driver</div>
+          <div className="bus-seats-container">
+            {organizeSeats().map((row, rowIndex) => {
+              const isLastRow = row.length === 5
+              
+              const seatElements = []
+              row.forEach((seat, seatIndex) => {
+                if (!isLastRow && seatIndex === 2) {
+                  seatElements.push(<div key={`aisle-${rowIndex}`} className="aisle-gap"></div>)
+                }
+                
+                seatElements.push(
+                  <button
+                    key={seat.id}
+                    className={`seat ${seat.status.toLowerCase()} ${selectedSeats.includes(seat.seatNumber) ? 'selected' : ''}`}
+                    onClick={() => toggleSeat(seat.seatNumber, seat.status)}
+                    disabled={seat.status !== 'AVAILABLE'}
+                  >
+                    {seat.seatNumber}
+                  </button>
+                )
+              })
+              
+              return (
+                <div key={rowIndex} className={`seat-row ${isLastRow ? 'last-row' : ''}`}>
+                  {seatElements}
+                </div>
+              )
+            })}
+          </div>
+        </div>
       </div>
 
       {selectionError && <p className="selection-error">{selectionError}</p>}

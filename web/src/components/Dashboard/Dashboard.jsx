@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import RouteCard from '../RouteCard/RouteCard'
-import BusMateLayout from '../Layout/BusMateLayout'
+import BusMateLayout from '../layout/BusMateLayout'
 import styles from './Dashboard.module.css'
 import { routesAPI, scheduleAPI } from '../../api/axios'
-import { heroBackground, ctaBackground, dashboardFallback } from './dashboardData'
+import { dashboardFallback } from './dashboardData' // Removed image imports from here
 import { formatCurrency, formatDuration } from '../../utils/formatters'
+
+const heroBackground = '/images/bus-bg.png';
+const ctaBackground = '/images/shed.png';
 
 function Dashboard({ onSignOut }) {
   const navigate = useNavigate()
@@ -162,4 +165,3 @@ function Dashboard({ onSignOut }) {
 }
 
 export default Dashboard
-
