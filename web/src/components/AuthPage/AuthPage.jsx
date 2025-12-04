@@ -2,7 +2,8 @@ import AuthPanel from '../AuthPanel/AuthPanel'
 import QuickStartCard from '../QuickStartCard/QuickStartCard'
 import styles from './AuthPage.module.css'
 
-const heroImage = 'https://www.figma.com/api/mcp/asset/2d6f30fe-7ef1-454f-9a12-30e0944b75fc'
+// CHANGE: Use your local image from the public folder
+const heroImage = '/images/bus-bg.png'
 
 const features = [
   {
@@ -22,6 +23,7 @@ const features = [
 function AuthPage({ onAuthenticated }) {
   return (
     <div className={styles.wrapper}>
+      {/* The background image is applied here via inline styles */}
       <div className={styles.background} style={{ backgroundImage: `url(${heroImage})` }} />
       <div className={styles.overlay} />
       <div className={styles.content}>
@@ -60,4 +62,3 @@ function AuthPage({ onAuthenticated }) {
 }
 
 export default AuthPage
-
