@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "frontend": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "backend": "cd ../backend && mvn spring-boot:run",
     "dev": "concurrently --kill-others-on-fail \"npm run frontend\" \"npm run backend\""
   },
