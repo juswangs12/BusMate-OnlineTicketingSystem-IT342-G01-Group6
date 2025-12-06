@@ -1,7 +1,6 @@
 # Stage 1: Build Vite (React) frontend
 FROM node:20-alpine AS frontend-build
 WORKDIR /app
-# Copy the entire monorepo (so ../web becomes visible)
 COPY . .
 WORKDIR /app/web
 RUN npm ci --legacy-peer-deps
