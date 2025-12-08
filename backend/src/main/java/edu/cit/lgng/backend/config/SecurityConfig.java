@@ -51,7 +51,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 // 1. React static files (Vite output) — THIS WAS MISSING
-                .requestMatchers("/", "/index.html", "/dist/**", "/assets/**", "/static/**", "/images/**").permitAll()
+                .requestMatchers("/", "/index.html", "/dist/**", "/assets/**", "/static/**", "/images/**", "/favicon.ico", "/css/**", "/js/**").permitAll()
 
                 // 2. Auth endpoints
                 .requestMatchers("/api/auth/login", "/api/auth/signup", "/oauth2/**", "/login/**").permitAll()
