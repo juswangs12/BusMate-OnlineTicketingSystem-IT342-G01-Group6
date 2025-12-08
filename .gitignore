@@ -66,6 +66,4 @@ Desktop.ini
 # Environment & Config Files
 # ============================================
 *.env
-*.properties
 *.config
-backend/src/main/resources/application.properties
