@@ -57,7 +57,7 @@ const LoginForm = () => {
 
   const handleGoogleLogin = () => {
     // Redirect to Spring Boot OAuth2 Google endpoint
-    window.location.href = 'https://busmate-i7he.onrender.com/oauth2/authorization/google';
+    window.location.href = 'https://busmate-onlineticketingsystem.onrender.com/oauth2/authorization/google';
   };
 
   return (
