@@ -22,6 +22,4 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   return children;
 };
 
-console.log("USER ROLE =>", user.role, "REQUIRED =>", requiredRole);
-
 export default ProtectedRoute;
