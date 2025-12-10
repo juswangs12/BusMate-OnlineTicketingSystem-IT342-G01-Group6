@@ -1,6 +1,6 @@
-export const heroBackground = 'https://www.figma.com/api/mcp/asset/b8df4ccd-61ca-4ac9-8ccf-b7b10efeae0b'
-export const ctaBackground = 'https://www.figma.com/api/mcp/asset/f1928deb-1d0a-4326-b2fc-891eee72b855'
-export const paymentPartner = 'https://www.figma.com/api/mcp/asset/5b943374-fefb-49ba-8959-361934bdd23d'
+export const heroBackground = ''
+export const ctaBackground = ''
+export const paymentPartner = ''
 
 export const dashboardFallback = {
   hero: {
