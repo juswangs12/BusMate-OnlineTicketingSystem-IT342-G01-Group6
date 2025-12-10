@@ -60,7 +60,7 @@ public class SecurityConfig {
                 // 3. PayMongo webhook
                 .requestMatchers("/api/paymongo/webhook").permitAll()
 
-                .requestMatchers("/admin/**").hasAnyRole("ADMIN", "SUPERADMIN")
+                .requestMatchers("/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
 
                 // 4. Everything else → authenticated (including API calls with JWT)
                 .anyRequest().authenticated()
