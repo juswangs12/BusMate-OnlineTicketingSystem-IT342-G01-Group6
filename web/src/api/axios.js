@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = '';
+const API = 'https://busmate-onlineticketingsystem.onrender.com';
 
 const api = axios.create({
   baseURL: `${API}/api`,
