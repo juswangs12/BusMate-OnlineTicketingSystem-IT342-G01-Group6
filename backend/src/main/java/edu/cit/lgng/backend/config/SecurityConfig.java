@@ -57,13 +57,14 @@ public class SecurityConfig {
                 // 2. Auth endpoints
                 .requestMatchers("/api/auth/login", "/api/auth/signup", "/oauth2/**", "/login/**").permitAll()
 
+                .requestMatchers("/admin/**")
+                     .hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+
                 // 3. PayMongo webhook
                 .requestMatchers("/api/paymongo/webhook").permitAll()
 
-                .requestMatchers("/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
-
                 // 4. Everything else → authenticated (including API calls with JWT)
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(ex -> ex.authenticationEntryPoint(apiEntryPoint))
