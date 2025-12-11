@@ -57,8 +57,6 @@ public class SecurityConfig {
                 // 2. Auth endpoints
                 .requestMatchers("/api/auth/login", "/api/auth/signup", "/oauth2/**", "/login/**").permitAll()
 
-                .requestMatchers("/admin/**").authenticated()
-
                 // 3. PayMongo webhook
                 .requestMatchers("/api/paymongo/webhook").permitAll()
 
