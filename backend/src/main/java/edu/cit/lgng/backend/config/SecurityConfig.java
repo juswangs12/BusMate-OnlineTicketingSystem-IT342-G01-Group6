@@ -41,14 +41,7 @@ public class SecurityConfig {
         };
 
         http
-            .cors(cors -> cors.configurationSource(request -> {
-                var config = new org.springframework.web.cors.CorsConfiguration();
-                config.setAllowedOriginPatterns(java.util.List.of("*"));
-                config.setAllowedMethods(java.util.List.of("GET","POST","PUT","DELETE","OPTIONS"));
-                config.setAllowedHeaders(java.util.List.of("*"));
-                config.setAllowCredentials(true);
-                return config;
-            }))
+            .cors(cors -> {})
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 // 1. React static files (Vite output) — THIS WAS MISSING
