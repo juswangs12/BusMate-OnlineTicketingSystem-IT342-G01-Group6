@@ -55,7 +55,7 @@ public class SecurityConfig {
                 .requestMatchers("/", "/index.html", "/dist/**", "/assets/**", "/static/**", "/images/**", "/favicon.ico", "/css/**", "/js/**").permitAll()
 
                 // 2. Auth endpoints
-                .requestMatchers("/api/auth/login", "/api/auth/signup", "/oauth2/**", "/login").permitAll()
+                .requestMatchers("/api/auth/login", "/api/auth/signup", "/oauth2/**", "/login/**").permitAll()
 
                 .requestMatchers("/admin/**").authenticated()
 
