@@ -65,7 +65,7 @@ public class SecurityConfig {
                 // 4. Everything else → authenticated (including API calls with JWT)
                 .anyRequest().authenticated()
             )
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
             .exceptionHandling(ex -> ex.authenticationEntryPoint(apiEntryPoint))
             .oauth2Login(oauth -> oauth.successHandler(oauth2LoginSuccessHandler))
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
