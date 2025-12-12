@@ -35,20 +35,30 @@ public class SecurityConfig {
                 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 res.setContentType("application/json");
                 res.getWriter().write("{\"error\":\"Unauthorized\"}");
-            } else {
-                res.sendRedirect("/login");
-            }
-        };
+            }};
 
         http
             .cors(cors -> {})
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 // 1. React static files (Vite output) — THIS WAS MISSING
-                .requestMatchers("/", "/index.html", "/static/**", "/assets/**").permitAll()
+                .requestMatchers( 
+                    "/", 
+            "/index.html", 
+            "/static/**", 
+            "/assets/**",
+            "/admin/**", 
+            "/dashboard/**",
+            "/booking/**",
+            "/routes/**",
+            "/profile/**",
+            "/my-bookings/**"
+).permitAll()
 
                 // 2. Auth endpoints
                 .requestMatchers("/api/auth/login", "/api/auth/signup", "/oauth2/**", "/login/**").permitAll()
+
+                .requestMatchers("/api/**").authenticated()
 
                 // 3. PayMongo webhook
                 .requestMatchers("/api/paymongo/webhook").permitAll()
